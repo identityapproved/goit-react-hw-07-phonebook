@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getContacts } from 'redux/contacts/contacts-selectors';
-import contactsActions from 'redux/contacts/contacts-actions';
 import { Form, FormBtn, Input, Label } from './ContactsForm.styled';
+import { addContact } from 'redux/contacts/contacts-operations';
 
 export default function ContactsForm() {
   const [name, setName] = useState('');
@@ -40,20 +40,9 @@ export default function ContactsForm() {
       return;
     }
 
-    dispatch(contactsActions.addContact({ name, number }));
+    dispatch(addContact({ name, number }));
     reset();
   };
-
-  // const onHandleSubmit = e => {
-  //   e.preventDefault();
-  //   const newContact = {
-  //     id: shId,
-  //     name,
-  //     number,
-  //   };
-  //   addContact(newContact);
-  //   reset();
-  // };
 
   const reset = () => {
     setName('');
@@ -86,7 +75,9 @@ export default function ContactsForm() {
           required
         />
       </Label>
-      <FormBtn type="submit">Add</FormBtn>
+      <FormBtn type="submit" disabled={!name || !number}>
+        Add
+      </FormBtn>
     </Form>
   );
 }
